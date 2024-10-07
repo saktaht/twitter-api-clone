@@ -1,0 +1,41 @@
+services:
+  db:
+    container_name: docker-db
+    build: 
+      dockerfile: docker/db/Dockerfile
+      context: .
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/postgresql/data
+    env_file:
+      - .env
+
+  drf:
+    container_name: drf
+    build: 
+      dockerfile: docker/app/Dockerfile
+      context: .
+    ports:
+      - "8000:8000"
+    tty: true
+    volumes:
+      - type: bind
+        source: ./src/mysite
+        target: /root/app
+    depends_on:
+      - db
+    # command: sh -c "sleep 3 && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+    env_file:
+      - .env
+
+volumes:
+  db-store:
