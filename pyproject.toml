@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["yu"]
 readme = "README.md"
-packages = [{include = "drf_twitter"}]
+packages = [{include = "DRF-twitter"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
