@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import os
 import dj_database_url
 import environ
@@ -16,7 +17,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-env_path = os.path.join(BASE_DIR, '../../.env')
+env_path = os.path.join(BASE_DIR, "../../.env")
 # .env ファイルから環境変数を読み込むメソッド
 environ.Env.read_env(env_path)
 
@@ -87,8 +88,8 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
     )
 }
 
