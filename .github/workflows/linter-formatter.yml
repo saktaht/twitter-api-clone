@@ -22,7 +22,8 @@ jobs:
         uses: Gr1N/setup-poetry@v9
 
       - name: Run poetry install
-        run: poetry install
+        run: |
+          cd src/mysite && poetry install
       
       - name: Black Check
         uses: jpetrucciani/black-check@24.10.0
@@ -50,7 +51,8 @@ jobs:
         uses: Gr1N/setup-poetry@v9
 
       - name: Run poetry install
-        run: poetry install
+        run: |
+          cd src/mysite && poetry install
 
       - name: Lint
         run: |
