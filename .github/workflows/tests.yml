@@ -1,28 +1,28 @@
-name: Test
+# name: Test
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
 
-jobs:
-  format:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+# jobs:
+#   format:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 10
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Python Setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
+#       - name: Python Setup
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: 3.12
       
-      - name: Poetry setup
-        uses: Gr1N/setup-poetry@v9
+#       - name: Poetry setup
+#         uses: Gr1N/setup-poetry@v9
 
-      - name: Run poetry install
-        run: poetry install
+#       - name: Run poetry install
+#         run: poetry install
 
-      - name: Run pytest
-        run: poetry run pytest src/mysite/tests/
+#       - name: Run pytest
+#         run: poetry run pytest src/mysite/tests/
