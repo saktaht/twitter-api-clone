@@ -25,4 +25,4 @@ jobs:
         run: poetry install
 
       - name: Run pytest
-        run: poetry run pytest src/mysite/
+        run: poetry run pytest src/mysite/tests/
