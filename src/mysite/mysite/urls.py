@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 # https://github.com/jazzband/djangorestframework-simplejwt ソースコード
 from rest_framework_simplejwt.views import (
