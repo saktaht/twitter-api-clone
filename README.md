@@ -8,4 +8,27 @@ python manage.py migrate
 
 python manage.py runserver
 
+#JET認証のパスワードを作成
+
+python manage.py createsuperuser
+
+ユーザー名: admin
+
+メールアドレス: fjla32@gmail.com
+
+パスワード: fafa86487
+
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "fafa86487"}' \
+  http://localhost:8000/api/token/
+
+これはurlを作ってないからできなかった
+
+curl \
+  -X GET \
+  -H "Authorization: Bearer <ACCESS_TOKEN>" \
+  http://localhost:8000/api/
+
 docker compose down --rmi all -v
