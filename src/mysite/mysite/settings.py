@@ -2,7 +2,7 @@ import os
 import dj_database_url
 import environ
 from pathlib import Path
-from datetime import timedelta #jwtのために追加
+from datetime import timedelta  # jwtのために追加
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
@@ -34,19 +34,19 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
-    "rest_framework_simplejwt", #ローカライズ/翻訳を使用したい
+    "rest_framework_simplejwt",  # ローカライズ/翻訳を使用したい
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.TokenAuthentication", 
-        "rest_framework_simplejwt.authentication.JWTAuthentication", #JWT認証に変更
+        # "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # JWT認証に変更
     ],
 }
 
-SIMPLE_JWT =  {
-    "AUTH_HEADER_TYPES": ('JWT', ),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30), #ライフタイムを30分に
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # ライフタイムを30分に
     "UPDATE_LAST_LOGIN": True,
 }
 

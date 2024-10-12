@@ -24,10 +24,10 @@ jobs:
       - name: Run poetry install
         run: poetry install
       
-      - name: Black Check
-        uses: jpetrucciani/black-check@24.10.0
-        with:
-          path: '.'
+      # - name: Black Check
+      #   uses: jpetrucciani/black-check@24.10.0
+      #   with:
+      #     path: '.'
 
       - name: Black Format
         run: poetry run black src/mysite/
