@@ -6,7 +6,7 @@ from datetime import timedelta  # jwtのために追加
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-env_path = os.path.join(BASE_DIR, "../../.env")
+env_path = os.path.join(BASE_DIR, "../../../.env")
 # .env ファイルから環境変数を読み込むメソッド
 environ.Env.read_env(env_path)
 
@@ -17,7 +17,6 @@ environ.Env.read_env(env_path)
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -124,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+STATIC_ROOT =  "static/"
 STATIC_URL = "static/"
 
 # Default primary key field type
