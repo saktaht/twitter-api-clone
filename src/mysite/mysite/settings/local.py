@@ -1,11 +1,11 @@
-from .base import *
+from .base import * 
 
 DEBUG = True
 
 # REST_FRAMEWORKのdictにSwaggerの設定を追加するためにupdateを使用
-REST_FRAMEWORK.update({"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"})
+REST_FRAMEWORK.update({"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"}) # noqa: F405
 
-INSTALLED_APPS += [
+INSTALLED_APPS += [ # noqa: F405
     "drf_spectacular",
 ]
 
