@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 # https://github.com/jazzband/djangorestframework-simplejwt ソースコード
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -14,4 +14,5 @@ urlpatterns = [
     path(
         "api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"
     ),  # トークンの再取得
+    path("app/", include("app.urls")),
 ]
