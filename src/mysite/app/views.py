@@ -1,5 +1,4 @@
 from django_filters import rest_framework as filter
-from rest_framework import views
 from rest_framework import generics
 
 from .models import Post
