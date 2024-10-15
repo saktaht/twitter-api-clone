@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "dj_rest_auth",
     "rest_framework_simplejwt",  # ローカライズ/翻訳を使用したい
+    "app",
 ]
 
 REST_FRAMEWORK = {

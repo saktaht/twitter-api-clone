@@ -8,8 +8,9 @@ from drf_spectacular.views import (
 from mysite.urls.base import urlpatterns
 
 urlpatterns += [
-    # Swaggerの設定
+    # ymlを作る
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # apiの内容を見れる
     path(
         "api/docs/",
         SpectacularSwaggerView.as_view(url_name="schema"),
