@@ -4,6 +4,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+
 # project.urls.baseからurlpatternsをimportする必要があります
 from mysite.urls.base import urlpatterns
 

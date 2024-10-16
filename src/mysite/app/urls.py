@@ -1,11 +1,11 @@
 from django.urls import path
 
 from .views import (
-  PostCreateAPIView, 
-  PostListAPIView,
-  PostRetrieveAPIView,
-  PostUpdateAPIView,
-  PostDeliteAPIView,
+    PostCreateAPIView,
+    PostListAPIView,
+    PostRetrieveAPIView,
+    PostUpdateAPIView,
+    PostDeliteAPIView,
 )
 
 
