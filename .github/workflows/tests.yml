@@ -1,28 +1,69 @@
-# name: Test
+name: Test
 
-# on:
-#   pull_request:
-#     types: [opened, reopened, synchronize]
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
 
-# jobs:
-#   format:
-#     runs-on: ubuntu-latest
-#     timeout-minutes: 10
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Python Setup
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: 3.12
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
       
-#       - name: Poetry setup
-#         uses: Gr1N/setup-poetry@v9
+      - name: Poetry setup
+        uses: Gr1N/setup-poetry@v9
 
-#       - name: Run poetry install
-#         run: poetry install
+      - name: Run poetry install
+        run: poetry install
 
-#       - name: Run pytest
-#         run: poetry run pytest src/mysite/tests/
+      - name: Run pytest
+        run: poetry run pytest src/mysite/app/tests/
+  
+  coverage:
+    name: Coverage Report
+    timeout-minutes: 10
+    needs: test 
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      
+      - name: Poetry setup
+        uses: Gr1N/setup-poetry@v9
+
+      - name: Run poetry install
+        run: poetry install
+      
+      - name: run pytest
+        run: poetry run pytest --junitxml=pytest.xml \
+                              --cov-report=term-missing \
+                              --cov=src tests/ | tee pytest-coverage.txt
+
+      - name: Check coverage
+        run: |
+          coverage_rate=$(poetry run pytest --cov=src tests/ --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+          
+          # PRをブロックはしないが警告を表示
+          if [ "$coverage_rate" -lt 65 ]; then
+            echo "::warning::Test coverage is below 65% (Current: $coverage_rate%)"
+                        
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.47
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
