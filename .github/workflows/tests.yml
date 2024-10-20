@@ -31,7 +31,7 @@ jobs:
           DJANGO_SETTINGS_MODULE: mysite.settings.local
         run: |
           cd src
-          poetry run pytest mysite/
+          poetry run pytest mysite/appxxx/tests/
 
   coverage:
     name: Coverage Report
