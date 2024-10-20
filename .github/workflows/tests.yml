@@ -26,7 +26,12 @@ jobs:
         run: poetry install
 
       - name: Run pytest
-        run: poetry run pytest src/mysite/
+        env:
+          PYTHONPATH: ${{ github.workspace }}/src
+          DJANGO_SETTINGS_MODULE: mysite.settings.local
+        run: |
+          cd src
+          poetry run pytest mysite/
 
   coverage:
     name: Coverage Report
