@@ -26,8 +26,8 @@ jobs:
         run: poetry install
 
       - name: Run pytest
-        run: poetry run pytest src/mysite/app/tests/
-  
+        run: poetry run pytest src/mysite/
+
   coverage:
     name: Coverage Report
     timeout-minutes: 10
@@ -52,11 +52,11 @@ jobs:
       - name: run pytest
         run: poetry run pytest --junitxml=pytest.xml \
                               --cov-report=term-missing \
-                              --cov=src tests/ | tee pytest-coverage.txt
+                              --cov=src | tee pytest-coverage.txt
 
       - name: Check coverage
         run: |
-          coverage_rate=$(poetry run pytest --cov=src tests/ --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+          coverage_rate=$(poetry run pytest --cov=src / --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
           
           # PRをブロックはしないが警告を表示
           if [ "$coverage_rate" -lt 65 ]; then
