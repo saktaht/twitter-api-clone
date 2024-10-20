@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "rest_framework_simplejwt",  # ローカライズ/翻訳を使用したい
     "django_filters",
-    "app",
+    "appxxx",
 ]
 
 REST_FRAMEWORK = {

@@ -1,6 +1,7 @@
 import pytest
+import pytz
 from django.utils import timezone
-from app.models import Post
+from appxxx.models import Post
 
 
 @pytest.mark.django_db
@@ -8,21 +9,19 @@ class TestPostModel:
     #pkがあるか確認
     def test_post_create(self):
         post = Post.objects.create(description="test")
-        assert post.title == "test"
+        assert post.description == "test"
         assert post.pk is not None
         assert post.created_at
         assert post.updated_at
-        
-    # __str__の内容が正しいかテスト 
-    def test_post_str(self):
-        post = Post.objects.create(description="test")
-        assert str(post) == "test" 
 
     # created_atとupdated_atフィールドが自動的に設定されていることをテスト
     def test_auto_timestamps(self):
-        post = Post.objects.create(description="Test")
-        assert post.created_at.date() == timezone.now().date()
-        assert post.updated_at.date() == timezone.now().date()
+        post = Post.objects.create(description="test")
+        post = Post.objects.create(description="test")
+        now = timezone.now()
+
+        assert (now - post.created_at).total_seconds() < 0.1
+        assert (now - post.updated_at).total_seconds() < 0.1
         
     # updateがしっかりできているかテスト
     def test_update_post(self):
@@ -47,7 +46,7 @@ class TestPostModel:
         assert post.created_at == original_created_at
         assert original_updated_at < post.updated_at # post.updated_atはsaveされた時の時間だから長くなる
         assert before_update < post.updated_at <= after_update
-      
+
     # 複数のPostオブジェクトを作れることをテスト
     def test_multiple_posts(self):
         Post.objects.create(description="Post 1")

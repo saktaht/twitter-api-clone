@@ -12,12 +12,12 @@ class PostCreateAPIView(generics.CreateAPIView):
 
 # 検索機能
 class PostFilter(filters.FilterSet):
-  description = filters.CharFilter(field_name="description", lookup_expr='icontains')
-  
-  class Meta:
-    model = Post
-    fields = ["description"]
+    description = filters.CharFilter(field_name="description", lookup_expr='icontains')
     
+    class Meta:
+        model = Post
+        fields = ["description"]
+        
 
 # 一覧取得
 class PostListAPIView(generics.ListAPIView):
