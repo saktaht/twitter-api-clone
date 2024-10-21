@@ -24,6 +24,7 @@ django-environ = "^0.11.2"
 dj-rest-auth = "5.0.1"
 pytest-srcpaths = "1.2.1"
 pytest-django = "4.9.0"
+poetry = "1.8.0"
 
 
 [build-system]
