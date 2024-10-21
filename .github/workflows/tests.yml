@@ -47,7 +47,7 @@ jobs:
 
       - name: Run exec
         run: |
-          run: docker exec -T drf pytest
+          run: docker compose exec -T drf pytest
       
       - name: Stop containers
         run: docker compose down --rmi all -v
@@ -76,12 +76,8 @@ jobs:
       - name: Build and run containers
         run: docker compose up -d --build
 
-      - name: Run exec
-        run: |
-          run: docker exec -T drf pytest
-
-      - name: docker exec -T drf pytest
-        run: docker exec -T drf pytest \
+      - name: docker compose exec -T drf pytest
+        run: docker compose exec -T drf pytest \
             --junitxml=pytest.xml \
             --cov-report=term-missing \
             --cov=src | tee pytest-coverage.txt
