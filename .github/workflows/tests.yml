@@ -29,6 +29,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}/src
           DJANGO_SETTINGS_MODULE: mysite.settings.local
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
           poetry run pytest src/mysite/appxxx/tests/
 
