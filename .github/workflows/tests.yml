@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,14 +32,28 @@ jobs:
       - name: Run poetry install
         run: poetry install
 
-      - name: Run pytest
-        env:
-          PYTHONPATH: ${{ github.workspace }}/src
-          DJANGO_SETTINGS_MODULE: mysite.settings.local
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      - name: Create .env file
         run: |
-          cd src/mysite
-          poetry run pytest appxxx/tests/
+          cat << EOF > .env
+          DB_USER=${DB_USER}
+          DB_PASSWORD=${DB_PASSWORD}
+          DB_NAME=${DB_NAME}
+          DB_PORT=${DB_PORT}
+          DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+          EOF
+
+      - name: Build and run containers
+        run: docker-compose up -d --build
+
+      - name: Wait for containers
+        run: sleep 10
+
+      - name: Run pytest
+        run: |
+          run: docker-compose exec drf poetry run pytest
+      
+      - name: Stop containers
+        run: docker-compose down --rmi all -v
 
   coverage:
     name: Coverage Report
@@ -56,13 +77,14 @@ jobs:
         run: poetry install
       
       - name: run pytest
-        run: poetry run pytest --junitxml=pytest.xml \
-                              --cov-report=term-missing \
-                              --cov=src | tee pytest-coverage.txt
+        run: docker-compose exec drf poetry run pytest \
+            --junitxml=pytest.xml \
+            --cov-report=term-missing \
+            --cov=src | tee pytest-coverage.txt
 
       - name: Check coverage
         run: |
-          coverage_rate=$(poetry run pytest --cov=src / --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+          coverage_rate=$(docker-compose exec -T drf poetry run pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
           
           # PRをブロックはしないが警告を表示
           if [ "$coverage_rate" -lt 65 ]; then
@@ -73,3 +95,6 @@ jobs:
         with:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
+          
+      - name: Stop containers
+        run: docker-compose down --rmi all -v

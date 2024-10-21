@@ -29,6 +29,12 @@ services:
       - type: bind
         source: ./src/mysite
         target: /root/app
+      - type: bind
+        source: ./pytest.xml
+        target: /root/app/pytest.xml
+      - type: bind
+        source: ./pytest-coverage.txt
+        target: /root/app/pytest-coverage.txt
     depends_on:
       - db
     command: sh -c "sleep 3 && python manage.py runserver 0.0.0.0:8000"
