@@ -15,5 +15,5 @@ urlpatterns = [
     path(
         "api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"
     ),  # トークンの再取得
-    path("app/", include("app.urls")),
+    path("app/", include("appxxx.urls")),
 ]

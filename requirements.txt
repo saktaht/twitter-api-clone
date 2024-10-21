@@ -3,13 +3,14 @@ psycopg2==2.9.9
 psycopg2-binary==2.9.9
 dj-database-url==0.5.0
 djangorestframework==3.14.0
-dj-rest-auth==2.2.*
+dj-rest-auth==5.0.1
 pytest==8.3.3
 pytest-django==4.9.0
-# settins.pyでenvを読み込むため
 django-environ
 poetry==1.8.0
 black==24.10.0
 djangorestframework-simplejwt==5.3.1
 drf-spectacular==0.27.2
 django-filter==24.3
+pytest-cov==5.0.0
+pytest-srcpaths==1.2.1
