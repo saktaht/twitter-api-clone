@@ -47,10 +47,7 @@ jobs:
 
       - name: Run exec
         run: |
-          run: docker exec -it drf /bin/bash
-      
-      - name: Run pytest
-        run: pytest
+          run: docker exec -T drf pytest
       
       - name: Stop containers
         run: docker compose down --rmi all -v
@@ -81,21 +78,22 @@ jobs:
 
       - name: Run exec
         run: |
-          run: docker exec -it drf /bin/bash
+          run: docker exec -T drf pytest
 
-      - name: run pytest
-        run: pytest \
+      - name: docker exec -T drf pytest
+        run: docker exec -T drf pytest \
             --junitxml=pytest.xml \
             --cov-report=term-missing \
             --cov=src | tee pytest-coverage.txt
 
       - name: Check coverage
         run: |
-          coverage_rate=$(docker compose exec -T drf /bin/bash pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
-          
+          docker compose exec -T drf bash -c "pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print \$4}' | sed 's/%//'" > coverage.txt
+          coverage_rate=$(cat coverage.txt)
           # PRをブロックはしないが警告を表示
           if [ "$coverage_rate" -lt 65 ]; then
             echo "::warning::Test coverage is below 65% (Current: $coverage_rate%)"
+
                         
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47
