@@ -30,8 +30,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}/src
           DJANGO_SETTINGS_MODULE: mysite.settings.local
         run: |
-          cd src
-          poetry run pytest mysite/appxxx/tests/
+          poetry run pytest src/mysite/appxxx/tests/
 
   coverage:
     name: Coverage Report
