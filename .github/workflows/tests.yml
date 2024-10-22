@@ -14,19 +14,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      
+      - name: Poetry setup
+        uses: Gr1N/setup-poetry@v9
 
-      - name: Build and Run Docker Compose
-        run: |
-          docker-compose up -d --build
-          docker-compose exec drf pytest
+      - name: Run poetry install
+        run: poetry install
+
+      - name: Run pytest
         env:
+          PYTHONPATH: ${{ github.workspace }}/src
+          DJANGO_SETTINGS_MODULE: mysite.settings.local
           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-
-      - name: Tear Down Docker Compose
-        if: always()
-        run: docker-compose down
+        run: |
+          poetry run pytest src/mysite/appxxx/tests/
 
   coverage:
     name: Coverage Report
@@ -38,23 +43,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and Run Docker Compose for Coverage
-        run: |
-          docker-compose up -d --build
-          docker-compose exec drf pytest --cov=src --cov-report=term-missing
-        env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
       
-      - name: Tear Down Docker Compose
-        if: always()
-        run: docker-compose down
+      - name: Poetry setup
+        uses: Gr1N/setup-poetry@v9
+
+      - name: Run poetry install
+        run: poetry install
+
+      - name: run pytest
+        run: poetry run pytest --junitxml=pytest.xml \
+                              --cov-report=term-missing \
+                              --cov=src | tee pytest-coverage.txt
 
       - name: Check coverage
         run: |
-          coverage_rate=$(docker-compose exec drf pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+          coverage_rate=$(poetry run pytest --cov=src / --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+
                         
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47
