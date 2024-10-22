@@ -10,47 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Python Setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-      
-      - name: Poetry setup
-        uses: Gr1N/setup-poetry@v9
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Run poetry install
-        run: poetry install
-
-      - name: Create .env file
+      - name: Build and Run Docker Compose
         run: |
-          cat << EOF > .env
-          DB_USER=${DB_USER}
-          DB_PASSWORD=${DB_PASSWORD}
-          DB_NAME=${DB_NAME}
-          DB_PORT=${DB_PORT}
-          DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-          EOF
+          docker-compose up -d --build
+          docker-compose exec drf pytest
+        env:
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
-      - name: Build and run containers
-        run: docker compose up -d --build
-
-      - name: Run exec
-        run: |
-          run: docker compose exec -T drf pytest
-      
-      - name: Stop containers
-        run: docker compose down --rmi all -v
+      - name: Tear Down Docker Compose
+        if: always()
+        run: docker-compose down
 
   coverage:
     name: Coverage Report
@@ -62,40 +38,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Python Setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-      
-      - name: Poetry setup
-        uses: Gr1N/setup-poetry@v9
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Run poetry install
-        run: poetry install
+      - name: Build and Run Docker Compose for Coverage
+        run: |
+          docker-compose up -d --build
+          docker-compose exec drf pytest --cov=src --cov-report=term-missing
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       
-      - name: Build and run containers
-        run: docker compose up -d --build
-
-      - name: docker compose exec -T drf pytest
-        run: docker compose exec -T drf pytest \
-            --junitxml=pytest.xml \
-            --cov-report=term-missing \
-            --cov=src | tee pytest-coverage.txt
+      - name: Tear Down Docker Compose
+        if: always()
+        run: docker-compose down
 
       - name: Check coverage
         run: |
-          docker compose exec -T drf bash -c "pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print \$4}' | sed 's/%//'" > coverage.txt
-          coverage_rate=$(cat coverage.txt)
-          # PRをブロックはしないが警告を表示
-          if [ "$coverage_rate" -lt 65 ]; then
-            echo "::warning::Test coverage is below 65% (Current: $coverage_rate%)"
-
+          coverage_rate=$(docker-compose exec drf pytest --cov=src --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
                         
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47
         with:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
-          
-      - name: Stop containers
-        run: docker compose down --rmi all -v
