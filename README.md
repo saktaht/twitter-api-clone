@@ -1,3 +1,7 @@
+
+
+
+
 docker compose up --build --detach
 
 docker exec -it drf /bin/bash
