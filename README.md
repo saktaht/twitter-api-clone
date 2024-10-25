@@ -1,10 +1,13 @@
-### settings.pyそれぞれの役割
+#### settings.pyそれぞれの役割
 ・dev        ← 開発用
+
 ・local      ← swagger uiを見れる
+
 ・production ← 本番環境
 
 
-### 
+#### .envファイルでlocalやproduction, devを切り替える
+DJANGO_SETTINGS_MODULE==project.settings.の後ろを変える
 
 ### dockerの起動コマンドまとめ
 docker compose up --build --detach
