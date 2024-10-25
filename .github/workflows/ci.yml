@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./Dockerfile
+          file: docker/app/Dockerfile
           push: false
           tags: bengotch/simplewhale:latest
           cache-from: type=local,src=/tmp/.buildx-cache
