@@ -4,10 +4,11 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /root/app
 
-COPY requirements.txt /root/app/
-
 WORKDIR /root/app
 
 RUN pip install --upgrade pip \
-    && pip install --upgrade setuptools \
-    && pip install -r requirements.txt
+    && pip install --upgrade setuptools 
+
+COPY requirements.txt /root/app/
+
+RUN pip install -r requirements.txt
