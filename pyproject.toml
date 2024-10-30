@@ -33,4 +33,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "mysite.settings.local"
-pythonpath = ["src/mysite"]
