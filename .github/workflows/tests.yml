@@ -1,28 +1,32 @@
-# name: Test
+name: Test
 
-# on:
-#   pull_request:
-#     types: [opened, reopened, synchronize]
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
 
-# jobs:
-#   format:
-#     runs-on: ubuntu-latest
-#     timeout-minutes: 10
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Python Setup
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: 3.12
-      
-#       - name: Poetry setup
-#         uses: Gr1N/setup-poetry@v9
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
 
-#       - name: Run poetry install
-#         run: poetry install
+      - name: ee
+        run: ls
 
-#       - name: Run pytest
-#         run: poetry run pytest src/mysite/tests/
+      - name: pip install
+        run: pip install -r requirements.txt
+
+      - name: Run pytest
+        env:
+          DJANGO_SETTINGS_MODULE: mysite.settings.local
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        run: pytest
