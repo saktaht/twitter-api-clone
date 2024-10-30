@@ -47,18 +47,14 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Poetry setup
-        uses: Gr1N/setup-poetry@v9
+      - name: ee
+        run: ls
 
-      - name: Run poetry install
-        run: poetry install
+      - name: pip install
+        run: pip install -r requirements.txt
 
       - name: run pytest
-        run: poetry run pytest --junitxml=pytest.xml
-
-      - name: Check coverage
-        run: |
-          coverage_rate=$(poetry run pytest --cov=src / --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+        run: pytest --junitxml=pytest.xml
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47
