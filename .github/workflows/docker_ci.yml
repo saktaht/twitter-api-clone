@@ -44,3 +44,11 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+      - 
+        name: Run pytest in Docker container
+        run: |
+          docker run \
+            -e DJANGO_SETTINGS_MODULE=mysite.settings.local \
+            -e SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} \
+            bengotch/drf:latest \
+            poetry run pytest /app/src/mysite/appxxx/tests/
