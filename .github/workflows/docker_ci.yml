@@ -49,6 +49,7 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     needs: docker
+    container: drf
     timeout-minutes: 10
 
     steps:
@@ -78,6 +79,7 @@ jobs:
     name: Coverage Report
     timeout-minutes: 10
     needs: test 
+    container: drf
     runs-on: ubuntu-latest
   
     steps:
