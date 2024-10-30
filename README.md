@@ -20,9 +20,7 @@ python manage.py migrate
 
 python manage.py runserver
 
-docker compose down --rmi all -v
-
-#### JET認証のパスワードを作成
+#JET認証のパスワードを作成
 
 python manage.py createsuperuser
 
@@ -44,3 +42,5 @@ curl \
   -X GET \
   -H "Authorization: Bearer <ACCESS_TOKEN>" \
   http://localhost:8000/api/
+
+docker compose down --rmi all -v
