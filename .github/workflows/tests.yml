@@ -31,7 +31,7 @@ jobs:
           DJANGO_SETTINGS_MODULE: mysite.settings.local
           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          poetry run pytest src/mysite/appxxx/tests/
+          poetry run pytest
 
   coverage:
     name: Coverage Report

@@ -38,15 +38,9 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
       -
         name: Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - 
-        name: Run pytest in Docker container
-        run: |
-          docker run \
-            bengotch/drf:latest \
-            pytest
