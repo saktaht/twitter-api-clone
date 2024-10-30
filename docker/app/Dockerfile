@@ -7,8 +7,10 @@ RUN mkdir -p /root/app
 WORKDIR /root/app
 
 RUN pip install --upgrade pip \
-    && pip install --upgrade setuptools 
+    && pip install --upgrade setuptools \
+    && pip install poetry \
+    && poetry config virtualenvs.create false
 
-COPY requirements.txt /root/app/
+COPY ./pyproject.toml ./poetry.lock* /root/app/
 
-RUN pip install -r requirements.txt
+RUN poetry install
