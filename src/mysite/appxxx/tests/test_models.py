@@ -4,7 +4,7 @@ from appxxx.models import Post
 
 
 @pytest.mark.django_db
-class TestPostModel:
+class TestPostModels:
     # pkがあるか確認
     def test_post_create(self):
         post = Post.objects.create(description="test")
