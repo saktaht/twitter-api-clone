@@ -1,6 +1,24 @@
 from .base import *
+import os
+import environ
+import dj_database_url
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+env_path = os.path.join(BASE_DIR, "../../../.env")
+# .env ファイルから環境変数を読み込むメソッド
+environ.Env.read_env(env_path)
+SECRET_KEY=env("SECRET_KEY")
+
+ALLOWED_HOSTS = ["*"]
 DEBUG = True
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+    )
+}
 
 # REST_FRAMEWORKのdictにSwaggerの設定を追加するためにupdateを使用
 REST_FRAMEWORK.update(  # noqa: F405

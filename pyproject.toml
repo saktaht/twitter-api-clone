@@ -25,6 +25,9 @@ dj-rest-auth = "5.0.1"
 pytest-srcpaths = "1.2.1"
 pytest-django = "4.9.0"
 poetry = "1.8.0"
+google-auth = "2.36.0"
+google-cloud-secret-manager = "2.21.0"
+gunicorn = "23.0.0"
 
 
 [build-system]

@@ -1,25 +1,7 @@
 import os
-import dj_database_url
 import environ
 from pathlib import Path
 from datetime import timedelta  # jwtのために追加
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-env = environ.Env()
-env_path = os.path.join(BASE_DIR, "../../../.env")
-# .env ファイルから環境変数を読み込むメソッド
-environ.Env.read_env(env_path)
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY=env("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
-ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -61,8 +43,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "mysite.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -80,17 +60,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "mysite.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-    )
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
