@@ -4,7 +4,7 @@ steps:
     [
       "build", "-t",
       "-t us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
-      "docker/app-prod/Dockerfile",
+      "./docker/app-prod/Dockerfile",
       # .はdockerfileがあるところかも
     ]
 
