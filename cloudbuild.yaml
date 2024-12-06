@@ -1,20 +1,20 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-  args: 
-  [
-    "build",
-    "-t",
-    "-t us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
-    ".",
-    # .はdockerfileがあるところかも
-  ]
+    args: 
+    [
+      "build",
+      "-t",
+      "-t us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
+      ".",
+      # .はdockerfileがあるところかも
+    ]
 
   - name: 'gcr.io/cloud-builders/docker'
-  args: 
-  [
-    'push', 
-    'us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest'
-  ]
+    args: 
+    [
+      'push', 
+      'us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest'
+    ]
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
