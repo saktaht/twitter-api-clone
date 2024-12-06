@@ -22,7 +22,7 @@ steps:
       [
         "run",
         "deploy",
-        "my-image",
+        "django-app",
         "--image",
         "us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
         "--platform",
@@ -37,7 +37,7 @@ steps:
         "--quiet"
       ]
 
-logsBucket: "GCS_BUCKET_NAME"
+logsBucket: "${_GCS_BUCKET_NAME}"
 serviceAccount: "projects/${PROJECT_ID}/serviceAccounts/twitter-clone@${PROJECT_ID}.iam.gserviceaccount.com"
 options:
   logging: GCS_ONLY
