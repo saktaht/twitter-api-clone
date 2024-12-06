@@ -5,7 +5,8 @@
 #     types: [opened, reopened, synchronize]
 
 # jobs:
-#   format:
+#   test:
+#     name: Run Tests
 #     runs-on: ubuntu-latest
 #     timeout-minutes: 10
 
@@ -25,4 +26,44 @@
 #         run: poetry install
 
 #       - name: Run pytest
-#         run: poetry run pytest src/mysite/tests/
+#         env:
+#           PYTHONPATH: ${{ github.workspace }}/src
+#           DJANGO_SETTINGS_MODULE: mysite.settings.local
+#           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+#         run: poetry run pytest src/mysite/appxxx/tests/
+
+#   coverage:
+#     name: Coverage Report
+#     timeout-minutes: 10
+#     needs: test 
+#     runs-on: ubuntu-latest
+  
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Python Setup
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: 3.12
+      
+#       - name: Poetry setup
+#         uses: Gr1N/setup-poetry@v9
+
+#       - name: Run poetry install
+#         run: poetry install
+
+#       - name: run pytest
+#         run: poetry run pytest --cov-report=term-missing \
+#                               --cov=src | tee pytest-coverage.txt
+
+#       - name: Check coverage
+#         run: |
+#           coverage_rate=$(poetry run pytest --cov=src / --cov-report=term-missing | grep TOTAL | awk '{print $4}' | sed 's/%//')
+
+                        
+#       - name: Pytest coverage comment
+#         uses: MishaKav/pytest-coverage-comment@v1.1.47
+#         with:
+#           pytest-coverage-path: ./pytest-coverage.txt
+#           junitxml-path: ./pytest.xml

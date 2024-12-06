@@ -1,9 +1,31 @@
 from .base import *
+import os
+import environ
+import dj_database_url
+from pathlib import Path
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent 
+env = environ.Env()
+env_path = os.path.join(BASE_DIR, "../../../.env")
+# .env ファイルから環境変数を読み込むメソッド
+environ.Env.read_env(env_path)
+SECRET_KEY=env("SECRET_KEY")
+
+ALLOWED_HOSTS = ["*"]
 DEBUG = True
+STATIC_URL = "static/"
+
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        engine='django.db.backends.postgresql',
+    )
+}
 
 # REST_FRAMEWORKのdictにSwaggerの設定を追加するためにupdateを使用
-REST_FRAMEWORK.update( # noqa: F405
+REST_FRAMEWORK.update(  # noqa: F405
     {"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"}
 )  # noqa: F405
 

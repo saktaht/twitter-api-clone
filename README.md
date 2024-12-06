@@ -6,10 +6,10 @@
 ・production ← 本番環境
 
 
-#### .envファイルでlocalやproduction, devを切り替える
-DJANGO_SETTINGS_MODULE==project.settings.の後ろを変える
+#### .env, manage.py, asgi.py, wsgi.pyファイルでlocalやproduction, devを切り替える
+mysite.settings.の後ろを変える
 
-### dockerの起動コマンドまとめ
+#### dockerの起動コマンドまとめ
 docker compose up --build --detach
 
 docker exec -it drf /bin/bash
@@ -20,7 +20,13 @@ python manage.py migrate
 
 python manage.py runserver
 
-#JET認証のパスワードを作成
+docker compose down --rmi all -v
+
+#### docker image作成 + push + deployコマンド
+gcloud auth configure-docker us-central1-docker.pkg.dev 
+
+
+#### JET認証のパスワードを作成
 
 python manage.py createsuperuser
 
@@ -42,5 +48,3 @@ curl \
   -X GET \
   -H "Authorization: Bearer <ACCESS_TOKEN>" \
   http://localhost:8000/api/
-
-docker compose down --rmi all -v
