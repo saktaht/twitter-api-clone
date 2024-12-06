@@ -28,6 +28,8 @@ poetry = "1.8.0"
 google-auth = "2.36.0"
 google-cloud-secret-manager = "2.21.0"
 gunicorn = "23.0.0"
+django-storages = "1.14.4"
+google-cloud-storage = "2.19.0"
 
 
 [build-system]

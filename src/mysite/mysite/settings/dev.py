@@ -1,4 +1,3 @@
-# dev環境でのみ使う設定を記載していきます
 from .base import *  # noqa: F401
 import os
 import environ
@@ -14,6 +13,8 @@ SECRET_KEY=env("SECRET_KEY")
 ALLOWED_HOSTS = ["*"]
 DEBUG = True
 ROOT_URLCONF = "mysite.urls.base"
+STATIC_URL = "static/"
+
 
 DATABASES = {
     "default": dj_database_url.config(

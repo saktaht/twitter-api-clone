@@ -25,14 +25,6 @@ docker compose down --rmi all -v
 #### docker image作成 + push + deployコマンド
 gcloud auth configure-docker us-central1-docker.pkg.dev 
 
-docker build -t us-central1-docker.pkg.dev/alien-baton-437000-d7/twitter-clone-rep/gcr.io/alien-baton-437000-d7/django-app:latest -f docker/app-prod/Dockerfile .
-
-docker push us-central1-docker.pkg.dev/alien-baton-437000-d7/twitter-clone-rep/gcr.io/alien-baton-437000-d7/django-app:latest
-
-gcloud run deploy --image us-central1-docker.pkg.dev/alien-baton-437000-d7/twitter-clone-rep/gcr.io/alien-baton-437000-d7/django-app:latest
-
-postgresql://yu:nahaa97438@localhost/twitter-api-clone?host=/cloudsql/alien-baton-437000-d7:us-central1:twitter-clone
-
 
 #### JET認証のパスワードを作成
 

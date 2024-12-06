@@ -19,4 +19,8 @@ COPY src /root/app/src
 
 WORKDIR /root/app/src/mysite
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "mysite.wsgi:application"]
+# エントリーポイントスクリプトをコピー
+COPY entrypoint.sh /root/app/src/mysite/
+RUN chmod +x /root/app/src/mysite/entrypoint.sh
+
+ENTRYPOINT ["/root/app/src/mysite/entrypoint.sh"]

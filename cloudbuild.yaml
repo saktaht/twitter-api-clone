@@ -1,0 +1,44 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+  args: 
+  [
+    "build",
+    "-t",
+    "-t us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
+    ".",
+    # .はdockerfileがあるところかも
+  ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+  args: 
+  [
+    'push', 
+    'us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest'
+  ]
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+        args:
+      [
+        "run",
+        "deploy",
+        "my-image",
+        "--image",
+        "us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+        "--ingress",
+        "all",
+        "--region",
+        "us-central1",
+        "--project",
+        "${PROJECT_ID}",
+        "--quiet"
+      ]
+
+logsBucket: "GCS_BUCKET_NAME"
+serviceAccount: "projects/${PROJECT_ID}/serviceAccounts/twitter-clone@${PROJECT_ID}.iam.gserviceaccount.com"
+options:
+  logging: GCS_ONLY
