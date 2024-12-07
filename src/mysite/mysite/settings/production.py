@@ -60,6 +60,29 @@ LOGGING = {
     },
 }
 
+# CORS設定
+INSTALLED_APPS += [
+    "corsheaders",
+]
+
+MIDDLEWARE += [
+    "corsheaders.middleware.CorsMiddleware",
+]
+
+CORS_ALLOW_ALL_ORIGINAS = False
+ALLOWED_URL_NAME = env("ALLOWED_HOSTS")
+CLOUD_URL = f"https://{ALLOWED_URL_NAME}"
+CORS_ALLOWED_ORIGINS = [
+    CLOUD_URL,
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "PUT",
+    "DELETE",
+    "OPTIONS",
+]
+
 APPEND_SLASH = False
 SECURE_SSL_REDIRECT = False
 

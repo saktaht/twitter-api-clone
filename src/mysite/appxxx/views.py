@@ -1,6 +1,5 @@
 from django_filters import rest_framework as filters
 from rest_framework import generics
-from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin
 
 from .models import Post
 from .serializers import PostSerializer
@@ -31,32 +30,12 @@ class PostRetrieveAPIView(generics.RetrieveAPIView):
 
 
 # 更新/一部更新 + GET
-# class PostUpdateAPIView(generics.UpdateAPIView):
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-class PostUpdateAPIView(RetrieveModelMixin, UpdateModelMixin, generics.GenericAPIView):
+class PostUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-        
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-        
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
 
 
 # 削除 + GET
-# class PostDeliteAPIView(generics.DestroyAPIView):
-#     queryset = Post.objects.all()
-class PostDeleteAPIView(RetrieveModelMixin, DestroyModelMixin, generics.GenericAPIView):
+class PostDeleteAPIView(generics.RetrieveDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-        
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
