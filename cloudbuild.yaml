@@ -5,7 +5,7 @@ steps:
         "build", 
         "-t",
         "us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest",
-        "./docker/app-prod/Dockerfile",
+        "./docker/app-prod",
       ]
 
   - name: 'gcr.io/cloud-builders/docker'
