@@ -8,7 +8,7 @@ steps:
         '-t',
         'us-central1-docker.pkg.dev/${PROJECT_ID}/twitter-clone-rep/gcr.io/${PROJECT_ID}/django-app:latest',
         '-f',
-        'docker/app-prod/',
+        'docker/app-prod',
         '.'
       ]
 
