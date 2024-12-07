@@ -36,3 +36,7 @@ steps:
         "${PROJECT_ID}",
         "--quiet"
       ]
+
+serviceAccount: "projects/${PROJECT_ID}/serviceAccounts/twitter-clone@${PROJECT_ID}.iam.gserviceaccount.com"
+options:
+  logging: GCS_ONLY
