@@ -61,11 +61,11 @@ LOGGING = {
 }
 
 # CORS設定
-INSTALLED_APPS += [
+INSTALLED_APPS += [ # noqa: F405
     "corsheaders",
 ]
 
-MIDDLEWARE += [
+MIDDLEWARE += [ # noqa: F405
     "corsheaders.middleware.CorsMiddleware",
 ]
 
