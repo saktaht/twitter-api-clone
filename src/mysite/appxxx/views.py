@@ -33,9 +33,11 @@ class PostRetrieveAPIView(generics.RetrieveAPIView):
 class PostUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    http_method_names = ["get", "put", "patch"]
 
 
 # 削除 + GET
 class PostDeleteAPIView(generics.RetrieveDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    http_method_names = ["get", "delete"]
