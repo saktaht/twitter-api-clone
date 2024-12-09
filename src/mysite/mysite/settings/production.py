@@ -36,11 +36,8 @@ GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 GS_QUERYSTRING_AUTH = False
 STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-    },
     "staticfiles": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "BACKEND": GS_BUCKET_NAME,
     },
 }
 GS_DEFAULT_ACL = "publicRead"
@@ -78,6 +75,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_METHODS = [
     "GET",
+    "POST",
     "PUT",
     "DELETE",
     "OPTIONS",
