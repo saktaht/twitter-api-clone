@@ -37,7 +37,8 @@ GS_QUERYSTRING_AUTH = False
 STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 STORAGES = {
     "staticfiles": {
-        "BACKEND": GS_BUCKET_NAME,
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "BUCKET_NAME": GS_BUCKET_NAME
     },
 }
 GS_DEFAULT_ACL = "publicRead"
