@@ -4,6 +4,7 @@ import os
 import environ
 import google.auth
 from google.cloud import secretmanager
+from urllib.parse import urlparse
 
 
 env = environ.Env(
@@ -34,9 +35,12 @@ DATABASES = {"default": env.db()}
     
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 GS_QUERYSTRING_AUTH = False
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 # STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+    },
     "staticfiles": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
         # "BUCKET_NAME": GS_BUCKET_NAME
@@ -70,8 +74,9 @@ MIDDLEWARE += [ # noqa: F405
 ]
 
 CORS_ALLOW_ALL_ORIGINAS = False
-ALLOWED_URL_NAME = env("ALLOWED_HOSTS")
-CLOUD_URL = f"https://{ALLOWED_URL_NAME}"
+# ALLOWED_URL_NAME = env("ALLOWED_HOSTS")
+# CLOUD_URL = f"https://{ALLOWED_URL_NAME}"
+CLOUD_URL = env('CLOUD_URL', default=None)
 CORS_ALLOWED_ORIGINS = [
     CLOUD_URL,
 ]
@@ -84,7 +89,17 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",
 ]
 
+# CSRF設定
+if CLOUD_URL:
+    # Cloud Runでアプリが動作する許可されたURLがカンマ区切りで設定
+    CSRF_TRUSTED_ORIGINS = env("CLOUDRUN_SERVICE_URLS").split(",")
+    # urlparse(url).netlocでhttps部分を省き、有効なURLだけ許可する
+    ALLOWED_HOSTS = [urlparse(url).netloc for url in CSRF_TRUSTED_ORIGINS]
+    # HTTPリクエストをHTTPSにリダイレクト
+    SECURE_SSL_REDIRECT = True
+    # リクエストがCloud Runを通過する場合、HTTPSで通信しているかどうかをDjangoが検知するためのヘッダー情報を指定
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 APPEND_SLASH = False
-SECURE_SSL_REDIRECT = False
 
 ROOT_URLCONF = "mysite.urls.base"
