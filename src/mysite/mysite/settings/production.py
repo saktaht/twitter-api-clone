@@ -34,14 +34,16 @@ DATABASES = {"default": env.db()}
     
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 GS_QUERYSTRING_AUTH = False
-STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+STATIC_URL = "/static/"
+# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 STORAGES = {
     "staticfiles": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        "BUCKET_NAME": GS_BUCKET_NAME
+        # "BUCKET_NAME": GS_BUCKET_NAME
     },
 }
 GS_DEFAULT_ACL = "publicRead"
+
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 LOGGING = {
