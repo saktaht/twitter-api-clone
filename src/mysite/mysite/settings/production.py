@@ -5,7 +5,6 @@ import environ
 import google.auth
 from pathlib import Path
 from google.cloud import secretmanager
-from urllib.parse import urlparse
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent 
