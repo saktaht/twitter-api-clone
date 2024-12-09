@@ -21,6 +21,7 @@ WORKDIR /root/app/src/mysite
 
 # エントリーポイントスクリプトをコピー
 COPY entrypoint.sh /root/app/src/mysite/
+RUN mkdir -p /root/app/src/mysite/staticfiles
 RUN chmod +x /root/app/src/mysite/entrypoint.sh
 
 ENTRYPOINT ["/root/app/src/mysite/entrypoint.sh"]

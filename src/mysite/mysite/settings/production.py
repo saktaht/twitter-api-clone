@@ -3,17 +3,21 @@ import io
 import os
 import environ
 import google.auth
+from pathlib import Path
 from google.cloud import secretmanager
-from urllib.parse import urlparse
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent 
 env = environ.Env(
     DEBUG=(bool, False),
 )
+# collectstaticするためにローカルでもjsonを得られるようにしておく
+# base_dir = os.path.dirname(os.path.abspath(__file__))
+# file_path = os.path.join(base_dir, "Twitter Clone IAM Project (1).json")
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS']=file_path
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "/secrets/service-account.json/secrets/service-account.json"
 
-    
 try:
     _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
 except google.auth.exceptions.DefaultCredentialsError as e:
@@ -31,25 +35,25 @@ if os.environ.get("GOOGLE_CLOUD_PROJECT", None):
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 
-DATABASES = {"default": env.db()}
-    
+DATABASES = {"default": env.db()}  
+
+# GCSの設定
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 GS_QUERYSTRING_AUTH = False
-STATIC_URL = "static/"
-# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
     },
     "staticfiles": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        # "BUCKET_NAME": GS_BUCKET_NAME
     },
 }
-GS_DEFAULT_ACL = "publicRead"
+GS_DEFAULT_ACL = None
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
-
+# Logging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -74,11 +78,9 @@ MIDDLEWARE += [ # noqa: F405
 ]
 
 CORS_ALLOW_ALL_ORIGINAS = False
-# ALLOWED_URL_NAME = env("ALLOWED_HOSTS")
-# CLOUD_URL = f"https://{ALLOWED_URL_NAME}"
-CLOUD_URL = env('CLOUD_URL', default=None)
+CORS = env("CLOUD_URL")
 CORS_ALLOWED_ORIGINS = [
-    CLOUD_URL,
+    CORS,
 ]
 
 CORS_ALLOW_METHODS = [
@@ -90,15 +92,15 @@ CORS_ALLOW_METHODS = [
 ]
 
 # CSRF設定
-if CLOUD_URL:
-    # Cloud Runでアプリが動作する許可されたURLがカンマ区切りで設定
-    CSRF_TRUSTED_ORIGINS = env("CLOUDRUN_SERVICE_URLS").split(",")
-    # urlparse(url).netlocでhttps部分を省き、有効なURLだけ許可する
-    ALLOWED_HOSTS = [urlparse(url).netloc for url in CSRF_TRUSTED_ORIGINS]
-    # HTTPリクエストをHTTPSにリダイレクト
-    SECURE_SSL_REDIRECT = True
-    # リクエストがCloud Runを通過する場合、HTTPSで通信しているかどうかをDjangoが検知するためのヘッダー情報を指定
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# Cloud Runでアプリが動作する許可されたURLがカンマ区切りで設定
+# CSRF_TRUSTED_ORIGINS = env("CLOUD_URL").split(",")
+# # urlparse(url).netlocでhttps部分を省き、有効なURLだけ許可する
+# ALLOWED_HOSTS = [urlparse(url).netloc for url in CSRF_TRUSTED_ORIGINS]
+ALLOWED_HOSTS = [env('ALLOWED_HOST', default=None)]
+# HTTPリクエストをHTTPSにリダイレクト
+SECURE_SSL_REDIRECT = True
+# リクエストがCloud Runを通過する場合、HTTPSで通信しているかどうかをDjangoが検知するためのヘッダー情報を指定
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 APPEND_SLASH = False
 
