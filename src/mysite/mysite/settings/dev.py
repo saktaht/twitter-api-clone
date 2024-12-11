@@ -22,3 +22,7 @@ DATABASES = {
         default=os.environ.get("DATABASE_URL"),
     )
 }
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [
+    "rest_framework.renderers.BrowsableAPIRenderer",
+]
