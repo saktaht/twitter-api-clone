@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: docker-db
+    container_name: db
     build: 
       dockerfile: docker/db/Dockerfile
       context: .
@@ -31,9 +31,10 @@ services:
         target: /root/app
     depends_on:
       - db
-    # command: sh -c "sleep 3 && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "sleep 3 && python manage.py runserver 0.0.0.0:8000"
     environment:
       - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+      - DJANGO_SETTINGS_MODULE=mysite.settings.local
     env_file:
       - .env
 
