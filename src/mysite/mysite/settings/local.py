@@ -24,7 +24,7 @@ DATABASES = {
     )
 }
 
-REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [ # noqa: F405
     "rest_framework.renderers.BrowsableAPIRenderer",
 ]
 

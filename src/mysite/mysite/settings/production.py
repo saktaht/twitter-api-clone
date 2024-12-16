@@ -76,7 +76,7 @@ INSTALLED_APPS += [ # noqa: F405
 
 MIDDLEWARE += [ # noqa: F405
     "corsheaders.middleware.CorsMiddleware",
-] + MIDDLEWARE  # CORSミドルウェアは最初に追加
+] + MIDDLEWARE  # noqa: F405
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
@@ -103,7 +103,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 APPEND_SLASH = False
 
-REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [ # noqa: F405
     "rest_framework.renderers.BrowsableAPIRenderer",
 ]
 
