@@ -9,8 +9,8 @@ from .views import (
 
 
 urlpatterns = [
-    path("post/", PostCreateAndListAPIView.as_view(), name="post_list"),
-    path("post/get/<int:pk>/", PostRetrieveAPIView.as_view(), name="post_get"),
-    path("post/update/<int:pk>/", PostUpdateAPIView.as_view(), name="post_update"),
-    path("post/delete/<int:pk>/", PostDeleteAPIView.as_view(), name="post_delete"),
+    path("", PostCreateAndListAPIView.as_view(), name="post_list"),
+    path("get/<int:pk>/", PostRetrieveAPIView.as_view(), name="post_get"),
+    path("update/<int:pk>/", PostUpdateAPIView.as_view(), name="post_update"),
+    path("delete/<int:pk>/", PostDeleteAPIView.as_view(), name="post_delete"),
 ]

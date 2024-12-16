@@ -24,6 +24,10 @@ DATABASES = {
     )
 }
 
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [ # noqa: F405
+    "rest_framework.renderers.BrowsableAPIRenderer",
+]
+
 # REST_FRAMEWORKのdictにSwaggerの設定を追加するためにupdateを使用
 REST_FRAMEWORK.update(  # noqa: F405
     {"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"}

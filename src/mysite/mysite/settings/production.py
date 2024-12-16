@@ -40,9 +40,10 @@ DATABASES = {"default": env.db()}
 # GCSの設定
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 GS_QUERYSTRING_AUTH = False
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = f'gs://{GS_BUCKET_NAME}'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = "/static/"
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
@@ -75,12 +76,11 @@ INSTALLED_APPS += [ # noqa: F405
 
 MIDDLEWARE += [ # noqa: F405
     "corsheaders.middleware.CorsMiddleware",
-]
+] + MIDDLEWARE  # noqa: F405
 
-CORS_ALLOW_ALL_ORIGINAS = False
-CORS = env("CLOUD_URL")
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    CORS,
+    env("CLOUD_URL"),
 ]
 
 CORS_ALLOW_METHODS = [
@@ -91,7 +91,6 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",
 ]
 
-# CSRF設定
 # Cloud Runでアプリが動作する許可されたURLがカンマ区切りで設定
 # CSRF_TRUSTED_ORIGINS = env("CLOUD_URL").split(",")
 # # urlparse(url).netlocでhttps部分を省き、有効なURLだけ許可する
@@ -103,5 +102,9 @@ SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 APPEND_SLASH = False
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += [ # noqa: F405
+    "rest_framework.renderers.BrowsableAPIRenderer",
+]
 
 ROOT_URLCONF = "mysite.urls.base"
